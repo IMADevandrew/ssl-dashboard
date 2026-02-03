@@ -1,0 +1,154 @@
+================================================================================
+         SSL CERTIFICATE DASHBOARD - HELP & INSTRUCTIONS
+================================================================================
+
+🔐 AUTHENTICATION
+─────────────────────────────────────────────────────────────────────────────
+Login:           Enter your password to access the dashboard
+Logout:          Click "🚪 Logout" button in the header
+Change Password: Edit login.php, line 3
+                 Change: define('ADMIN_PASSWORD', 'admin123');
+                 To:     define('ADMIN_PASSWORD', 'your-new-password');
+
+
+➕ ADDING WEBSITES
+─────────────────────────────────────────────────────────────────────────────
+1. Enter the website URL (e.g., https://example.com or just example.com)
+2. Click "Add Website" button or press Enter
+3. The SSL certificate will be checked automatically
+4. Results appear in the table below
+
+
+🔍 CERTIFICATE STATUS LEGEND
+─────────────────────────────────────────────────────────────────────────────
+
+✅ VALID (Green Badge)
+   Status:      Certificate is healthy and secure
+   Days Left:   More than 30 days remaining
+   Action:      No action needed - monitor normally
+   Example:     42 days until expiry → Shows as VALID
+
+⚠️ WARNING (Yellow Badge)
+   Status:      Certificate will expire soon - plan renewal
+   Days Left:   7 to 30 days remaining
+   Action:      Renew certificate within next week
+   Example:     20 days until expiry → Shows as WARNING
+
+🔴 CRITICAL (Red Badge)
+   Status:      Certificate expires very soon - urgent action needed
+   Days Left:   Less than 7 days remaining
+   Action:      Renew certificate immediately (within 24-48 hours)
+   Example:     3 days until expiry → Shows as CRITICAL
+
+❌ EXPIRED (Dark Red Badge)
+   Status:      Certificate has already expired - website is at risk
+   Days Left:   0 or negative (already passed expiry date)
+   Action:      Renew certificate immediately - users may see warnings
+   Example:     Expired 5 days ago → Shows as EXPIRED
+
+STATUS THRESHOLDS:
+─────────────────────────────────────────────────────────────────────────────
+Days Remaining          Status              Display Color
+─────────────────────────────────────────────────────────────────────────────
+31+ days                VALID               🟢 Green
+7-30 days               WARNING             🟡 Yellow
+1-6 days                CRITICAL            🔴 Red
+0 or negative           EXPIRED             🟣 Dark Pink
+
+
+📊 DASHBOARD FEATURES
+─────────────────────────────────────────────────────────────────────────────
+Statistics Cards:  Shows count of Valid, Warning, Critical, and Expired certs
+
+Check Button:      Click next to any website to check its current certificate
+                   status manually
+
+Check All Now:     Click to check ALL websites at once
+                   (Takes a few seconds depending on number of sites)
+
+Export Data:       Click to download all certificate data as CSV file
+                   Format: ssl-certificates-YYYY-MM-DD.csv
+                   Includes: Domain, Expiry Date, Days Until, Status
+
+Delete Button:     Click to remove a website from monitoring
+
+
+⏰ AUTOMATIC CHECKS
+─────────────────────────────────────────────────────────────────────────────
+Dashboard Refresh: Data refreshes automatically every 30 seconds
+Daily Check:       All certificates checked daily at 9:00 AM (when server running)
+Last Checked:      Timestamp shows when each certificate was last verified
+
+
+📁 FILE LOCATIONS
+─────────────────────────────────────────────────────────────────────────────
+Dashboard:         C:\xampp\htdocs\ssl-dashboard\index.html
+API Backend:       C:\xampp\htdocs\ssl-dashboard\api.php
+Login Page:        C:\xampp\htdocs\ssl-dashboard\login.php
+Logout Handler:    C:\xampp\htdocs\ssl-dashboard\logout.php
+Data Storage:      C:\xampp\htdocs\ssl-dashboard\data.json
+
+
+⚙️ CONFIGURATION
+─────────────────────────────────────────────────────────────────────────────
+Change Warning Threshold (default 30 days):
+→ Edit api.php, line 156
+→ Change: } else if (daysUntilExpiry < 30) {
+→ To:     } else if (daysUntilExpiry < 45) {
+
+Change Critical Threshold (default 7 days):
+→ Edit api.php, line 154
+→ Change: } else if (daysUntilExpiry < 7) {
+→ To:     } else if (daysUntilExpiry < 14) {
+
+Change Refresh Interval (default 30 seconds):
+→ Edit index.html, find: setInterval(loadData, 30000);
+→ Change 30000 to desired milliseconds (e.g., 60000 = 60 seconds)
+
+
+🛠️ TROUBLESHOOTING
+─────────────────────────────────────────────────────────────────────────────
+Connection Error:
+  → Make sure XAMPP server is running
+  → Check that http://localhost/ssl-dashboard/ is accessible
+  → Check browser console for error messages (F12)
+
+401 Unauthorized:
+  → Your session has expired
+  → Click logout and log back in with your password
+  → Clear browser cookies and try again
+
+Certificate Check Failed:
+  → Website may not have an SSL certificate
+  → Website might be unreachable
+  → Server might be blocking the connection
+  → Try checking a different website first
+
+Data Not Saving:
+  → Ensure data.json file exists in ssl-dashboard folder
+  → Check file permissions allow read/write
+  → Restart the dashboard
+
+Dashboard Buttons Not Working:
+  → Clear browser cache (Ctrl+Shift+Del)
+  → Hard refresh page (Ctrl+F5)
+  → Close and reopen browser
+
+
+📝 QUICK REFERENCE
+─────────────────────────────────────────────────────────────────────────────
+Access Dashboard:  http://localhost/ssl-dashboard/
+Default Password:  admin123
+API Base URL:      /api.php
+
+API Endpoints:
+  GET    /api.php/websites        - Get all websites
+  POST   /api.php/websites        - Add new website
+  DELETE /api.php/websites/:index - Delete website
+  POST   /api.php/check/:index    - Check single certificate
+  POST   /api.php/check-all       - Check all certificates
+
+
+================================================================================
+Need more help? Check the code comments in index.html or api.php
+================================================================================
